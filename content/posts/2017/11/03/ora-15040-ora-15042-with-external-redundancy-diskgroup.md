@@ -1,0 +1,73 @@
+---
+title: 'ORA-15040 ORA-15042 with EXTERNAL redundancy Diskgroup'
+date: '2017-11-03T23:27:13+05:30'
+status: publish
+permalink: /2017/11/03/ora-15040-ora-15042-with-external-redundancy-diskgroup
+author: Sidhu
+excerpt: ''
+type: post
+id: 569
+category:
+    - Uncategorized
+tag: []
+post_format: []
+wpsd_autopost:
+    - '1'
+---
+A colleague was working on an ASM issue (Standalone one, Version 11.2.0.3 on AIX) at one of the customer sites. Later on, I also joined him. The issue was that the customer added few news disks to an existing diskgroup. Everything went well and the rebalance kicked in. After some time, something happened and all of a sudden the diskgroup was dismounted. While trying the mount the diskgroup again, it was giving
+
+```
+<pre class="brush: sql; title: ; notranslate" title="">ORA-15032: not all alterations performed
+ORA-15040: diskgroup is incomplete
+ORA-15042: ASM disk "27" is missing from group number "2"
+```
+
+Here is the relevant text from the ASM alert log
+
+```
+<pre class="brush: sql; title: ; notranslate" title="">ORA-27063: number of bytes read/written is incorrect
+IBM AIX RISC System/6000 Error: 19: <strong>No such device</strong>
+Additional information: -1
+Additional information: 1048576
+WARNING: <strong>Write Failed</strong>. group:2 disk:27 AU:1005 offset:0 size:1048576
+Fri Nov 03 10:55:27 2017
+Errors in file /u01/app/oracle/diag/asm/+asm/+ASM1/trace/+ASM1_dbw0_58983380.trc:
+ORA-27063: number of bytes read/written is incorrect
+IBM AIX RISC System/6000 Error: 19: No such device
+Additional information: -1
+Additional information: 4096
+WARNING: Write Failed. group:2 disk:27 AU:0 offset:16384 size:4096
+NOTE: cache initiating offline of disk 27 group DATADG
+NOTE: process _dbw0_+asm1 (58983380) initiating offline of disk 27.3928481273 (DISK_01) with mask 0x7e in group 2
+Fri Nov 03 10:55:27 2017
+WARNING: Disk 27 (DISK_01) in group 2 mode 0x7f is now being offlined
+WARNING: Disk 27 (DISK_01) in group 2 in mode 0x7f is now being taken offline on ASM inst 1
+NOTE: initiating PST update: grp = 2, dsk = 27/0xea27ddf9, mask = 0x6a, op = clear
+ERROR: failed to copy file +DATADG.263, extent 1952
+GMON updating disk modes for group 2 at 36 for pid 9, osid 58983380
+ERROR: Disk 27 cannot be offlined, since diskgroup has external redundancy.
+ERROR: too many offline disks in PST (grp 2)
+ERROR: ORA-15080 thrown in ARB0 for group number 2
+Errors in file /u01/app/oracle/diag/asm/+asm/+ASM1/trace/+ASM1_arb0_57672234.trc:
+ORA-15080: synchronous I/O operation to a disk failed
+Fri Nov 03 10:55:27 2017
+NOTE: stopping process ARB0
+WARNING: Disk 27 (DISK_01) in group 2 mode 0x7f offline is being aborted
+WARNING: Offline of disk 27 (DISK_01) in group 2 and mode 0x7f failed on ASM inst 1
+NOTE: halting all I/Os to diskgroup 2 (DATADG)
+Fri Nov 03 10:55:28 2017
+NOTE: cache dismounting (not clean) group 2/0xDEB72D47 (DATADG)
+NOTE: messaging CKPT to quiesce pins Unix process pid: 62128816, image: oracle@tiiproddb1.murugappa.co.in (B000)
+NOTE: dbwr not being msg'd to dismount
+Fri Nov 03 10:55:28 2017
+NOTE: LGWR doing non-clean dismount of group 2 (DATADG)
+NOTE: LGWR sync ABA=124.7138 last written ABA 124.7138
+NOTE: cache dismounted group 2/0xDEB72D47 (DATADG)
+SQL> alter diskgroup DATADG dismount force /* ASM SERVER */ 
+```
+
+At this stage disk 27 was not readable even with dd. So that means something is wrong with the disk. Since it is an external redundancy diskgroup not much can be done until the disk becomes available.
+
+Speaking to the storage team cleared the air. One that the disk had gone offline at storage level so that is why even dd was not able to read it. Two that all these disks were [thin provisioned](http://searchitchannel.techtarget.com/feature/Thin-provisioning-explained-and-defined) *(over provisioning of the storage space to improve the utilization; similar to over provisioning of CPU cores in the Virtualization world)* from the storage. This particular disk 27 was meant for some other purpose but got wrongly allocated to this diskgroup. The actual space available in the pool (of this disk) was less than what was needed. The moment disks were added to the diskgroup, the rebalance kicked in and ASM started writing data to the disk. Within few minutes space became full and the storage software took the disk offline. Since ASM couldn’t write to the disk, the diskgroup was dismounted.
+
+Fortunately, in the same pool, there was another disk that was still unused. So the storage guy dropped that disk and it freed up some space in the pool. He brought this disk 27 online after that. Diskgroup got mounted and the rebalance kicked in again. Finally, we dropped this disk and the rebalance started again. Once the rebalance completed, disk was free to be taken offline.

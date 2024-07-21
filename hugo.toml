@@ -1,0 +1,25 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'My New Hugo Site'
+theme = 'hugo-xmin'
+
+
+
+[params]
+  mainSections = ["home", "blog1", "blog2"]
+
+  [[menu.main]]
+    name = "Home"
+      url = "/"
+        weight = 1
+
+	[[menu.main]]
+	  name = "Blog 1"
+	    url = "/blog1/"
+	      weight = 2
+
+	      [[menu.main]]
+	        name = "Blog 2"
+		  url = "/blog2/"
+		    weight = 3
+
