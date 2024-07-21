@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Accessing outside DocumentRoot files in Apache HTTP server | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Accessing outside DocumentRoot files in Apache HTTP server</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2008/07/22</h2>
+</div>
+
+<main>
+<p>I don’t know a bit about Apache HTTP server but faced one issue in office…so thought about writing it here 😉</p>
+<p>We are having a 3 tier setup where Oracle Application Server 10g was there on AIX 5.3. It runs Apache HTTP server and we needed to access the files outside DocumentRoot. A bit of googling revealed that we could use <a href="http://httpd.apache.org/docs/2.2/mod/mod_alias.html#alias">Alias</a> for that. Basically we need to add the following small piece of text to httpd.conf file:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;
+Alias /test1/ &#34;/home/sidhu/test1/&#34;
+&lt;Directory &#34;/home/sidhu/test1&#34;&gt;
+Options Indexes FollowSymLinks
+AllowOverride None
+Order allow,deny
+Allow from all
+&lt;/Directory&gt;
+</code></pre><p>Now we should be able to access the files in /home/sidhu/test1 by hitting the following URL</p>
+<p>http://server:port/test1/filename.html</p>
+<p>PS: I couldn’t find the reason but it didn’t allow me to use word “reports” in the directory name.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

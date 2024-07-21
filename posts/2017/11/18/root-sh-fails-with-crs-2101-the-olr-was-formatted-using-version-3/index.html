@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>root.sh fails with CRS-2101:The OLR was formatted using version 3 | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">root.sh fails with CRS-2101:The OLR was formatted using version 3</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2017/11/18</h2>
+</div>
+
+<main>
+<p>Got this while trying to install 11.2.0.4 RAC on Redhat Linux 7.2. root.sh fails with a message like</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;ohasd failed to start
+Failed to start the Clusterware. Last 20 lines of the alert log follow:
+2017-11-09 15:43:37.883:
+[client(37246)]CRS-2101:The OLR was formatted using version 3.
+</code></pre><p>This is bug 18370031. Need to apply the patch before running root.sh.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

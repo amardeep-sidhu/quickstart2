@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Smokescreen detects traffic from an Exadata VM | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Smokescreen detects traffic from an Exadata VM</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2022/03/21</h2>
+</div>
+
+<main>
+<p>A customer who is using an Exadata X8M-2 with multiple VMs had Smokescreen deployed in their company recently and they reported an issue that one of the Smokescreen decoy servers in their DC was seeing traffic from one of the Exadata VMs on a certain port. That was rather confusing as that port was the database listener port on that VM and why would a VM with Oracle RAC deployed try to access any random IP on the listener port. Also it was happening only for this VM. Nothing for so many other VMs.</p>
+<p>We were just looking at the things and my colleague said that he had seen this IP somewhere and he started looking through the emails. In a minute, we found the issue as he found this IP mentioned in one of the emails. This was the VIP of this VM from where the traffic was reported to be originating. While reserving IPs for Smokescreen decoy servers, someone made the mess and re-used the IP that was already used for one of the VIPs of this RAC system !</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

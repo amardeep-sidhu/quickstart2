@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>VirtualBox and Windows driver verifier | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">VirtualBox and Windows driver verifier</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2014/12/03</h2>
+</div>
+
+<main>
+<p>I was troubleshooting some Windows hangs on my Desktop system running Windows 8 and enabled driver verifier. Today when I tried to start VirtualBox it failed with this error message.</p>
+<blockquote>
+<p>Failed to load VMMR0.r0 (VERR_LDR_MISMATCH_NATIVE)</p>
+</blockquote>
+<p>Most of the online forums were asking to reinstall VirtualBox to fix the issue. But <a href="http://stackoverflow.com/questions/21654596/suddenly-getting-failed-to-load-vmmr0-r0-verr-ldr-mismatch-native-in-virtual">one of the thread</a> mentioned that it was being caused by Windows Driver Verifier. I disabled it, restarted Windows and VirtualBox worked like a charm. Didn’t have time to do more research as i quickly wanted to test something. May be we can skip some particular stuff from Driver Verifier and VirutalBox can then work.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

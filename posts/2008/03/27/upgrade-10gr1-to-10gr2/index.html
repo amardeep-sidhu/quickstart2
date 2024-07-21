@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upgrade 10gR1 to 10gR2 &amp;#8211; DBUA error | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Upgrade 10gR1 to 10gR2 – DBUA error</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2008/03/27</h2>
+</div>
+
+<main>
+<p>Today I was upgrading 10gR1 to 10gR2 (10.2.0.1) on Linux x86. The upgrade went almost fine (except that I had to install one package and change few kernel parameters) but while running DBUA to upgrade databases, it gave an error:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;Could not get database version from the Oracle Server component. The CEP file rdbmsup.sql does not provide the version directive
+
+and
+
+Start of root element expected. Upgrade Configuration file
+&#39;C:\Oracle10g2\cfgtoollogs\dbua\test\upgrade5\upgrade.xml&#39; is not a valid XML file.
+</code></pre><p>I searched in the metalink and found that this all happens due to customized glogin.sql file which was there in my case also. And removing that customization made DBUA rock 🙂</p>
+<p>You might want to check <a href="https://metalink.oracle.com/metalink/plsql/f?p=200:27:2925108627239218163::::p27_id,p27_show_header,p27_show_help:698669.994,1,1">here</a>, <a href="https://metalink.oracle.com/metalink/plsql/f?p=200:27:2925108627239218163::::p27_id,p27_show_header,p27_show_help:640602.993,1,1">here</a> and <a href="https://metalink.oracle.com/metalink/plsql/f?p=130:14:2925108627239218163::::p14_database_id,p14_docid,p14_show_header,p14_show_help,p14_black_frame,p14_font:NOT,435453.1,1,1,1,helvetica">here</a>.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

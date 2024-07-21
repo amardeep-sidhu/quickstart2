@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EXP-00008: ORACLE error 600 encountered | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">EXP-00008: ORACLE error 600 encountered</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2008/03/24</h2>
+</div>
+
+<main>
+<p>Today I was running export of an Oracle 9.2.0.1 database. The export completed but with an ORA-600 error:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;
+
+EXP-00008: ORACLE error 600 encountered
+ORA-00600: internal error code, arguments: [xsoptloc2], [4], [4], [0], [], [], [], []
+ORA-06512: in &#34;SYS.DBMS_AW&#34;, line 347
+ORA-06512: in &#34;SYS.DBMS_AW&#34;, line 470
+ORA-06512: in &#34;SYS.DBMS_AW_EXP&#34;, line 270
+ORA-06512: in line 1
+EXP-00083: The previous problem occurred when calling SYS.DBMS_AW_EXP.schema_info_exp
+</code></pre><p>I googled a bit and found that the problem is with applying some patchset. Then metalink confirmed the same. Somebody tried applying a patch to upgrade it to 9.2.0.5 but didn’t perform all the steps (missed post installation steps, to be precise). Metalink <a href="https://metalink.oracle.com/metalink/plsql/f?p=130:14:3653505393918947609::::p14_database_id,p14_docid,p14_show_header,p14_show_help,p14_black_frame,p14_font:NOT,300849.1,1,1,1,helvetica">Note 300849.1 </a>covers the issue and also gives the solution. In nutshell startup the database with <strong>startup migrate</strong> and <strong>run catpatch.sql</strong>.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

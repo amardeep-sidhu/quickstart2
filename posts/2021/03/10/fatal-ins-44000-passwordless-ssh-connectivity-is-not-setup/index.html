@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>[FATAL] [INS-44000] Passwordless SSH connectivity is not setup | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">[FATAL] [INS-44000] Passwordless SSH connectivity is not setup</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2021/03/10</h2>
+</div>
+
+<main>
+<p>Faced this while running installer for setting up a 2 node RAC setup (version 19.8) on an Oracle SuperCluster. The error reported in the log is:</p>
+<!-- raw HTML omitted -->
+<pre tabindex="0"><code>
+&lt;/div&gt;From the error it appears that the ssh is not setup between two nodes but actually that is not the case. Here the error message is bit misleading. It turned out to be an issue with scp with openssh version 8.x. Running the setup with -debug option gives the clue:
+
+&lt;div class=&#34;wp-block-syntaxhighlighter-code &#34;&gt;```
+&lt;pre class=&#34;brush: plain; title: ; notranslate&#34; title=&#34;&#34;&gt;
+&lt;protocol error: filename does not match request&gt;
+</code></pre><!-- raw HTML omitted -->
+<p>Workaround is to pass the -T option to scp to ignore the new checks. You can rename the scp binary to something like scp.original and create a new shell script there like this:</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

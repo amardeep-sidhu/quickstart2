@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Unable to connect to the database with SQLPlus | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Unable to connect to the database with SQLPlus</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2022/01/06</h2>
+</div>
+
+<main>
+<p>I was working on configuring a new database for backup to ZDLRA and hit this issue while testing a controlfile backup via Enterprise Manager -&gt; Schedule backup. It could happen in any environment.</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;wp-block-code&#34;&gt;```
+Unable to connect to the database with SQLPlus, either because the database is down or due to an environment issue such as incorrectly specified...
+If the database is up, check the database target monitoring properties and verify that the Oracle Home value is correct.
+</code></pre><pre tabindex="0"><code>
+ The 2nd line clearly tells the problem but since the Cluster Database status in EM was green, so it took me a while to figure it out. Issue turned out to be a missing / in the end of ORACLE\_HOME specified in monitoring configuration of the cluster database. The DB home specified was /u01/app/oracle/product/11.2.0.4/dbhome\_1 instead of /u01/app/oracle/product/11.2.0.4/dbhome\_1**/**.
+
+On the server the bash\_profile has the home set as /u01/app/oracle/product/11.2.0.4/dbhome\_1. When I tried to connect as sysdba there, it gave an error TNS : lost contact. Then I set the environment with .oraenv and I was able to connect. /etc/oratab had correct home specified as /u01/app/oracle/product/11.2.0.4/dbhome\_1**/**. After comparing the value of ORACLE\_HOME in these two cases, the issue was identified. Then I updated the ORACLE\_HOME value in the target monitoring configuration in Enterprise Manager and it worked as expected.
+</code></pre>
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

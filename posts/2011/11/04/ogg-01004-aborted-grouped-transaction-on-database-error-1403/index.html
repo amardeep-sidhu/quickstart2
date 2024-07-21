@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OGG-01004  Aborted grouped transaction on &lt;table_name&gt;&amp;#8216;, Database error 1403 () | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">OGG-01004  Aborted grouped transaction on &lt;table_name&gt;‘, Database error 1403 ()</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2011/11/04</h2>
+</div>
+
+<main>
+<p>The <a href="http://amardeepsidhu.com/blog/2011/11/04/expdp-not-consistent/">last post</a> was just like that. It was this GoldenGate issue that woke me up from the deep sleep to do a post after a long time 😛 .</p>
+<p>Well it was a simple schema to schema replication setup using GoldenGate. We were using the SCN method (Metalink Doc ID 1276058.1 &amp; 1347191.1) to do the intial load so that there is no overlvapping of transactions and the replicat runs with minimum issues. Even after following this method, the replicat was hitting</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: plain; title: ; notranslate&#34; title=&#34;&#34;&gt;2011-10-31 19:25:17  WARNING OGG-01004  Aborted grouped transaction on &#39;SCHEMA.TABLE&#39;, Database error 1403 ().
+
+2011-10-31 19:25:17  WARNING OGG-01003  Repositioning to rba 3202590 in seqno 1.
+
+2011-10-31 19:25:18  WARNING OGG-01154  SQL error 1403 mapping SCHEMA.TABLE TO SCHEMA.TABLE.
+
+2011-10-31 19:25:18  WARNING OGG-01003  Repositioning to rba 3468713 in seqno 1.
+</code></pre><p>If we managed to bypass this error somehow, it hit:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: plain; title: ; notranslate&#34; title=&#34;&#34;&gt;2011-10-24 19:58:15  WARNING OGG-00869  OCI Error ORA-00001: unique constraint (SCHEMA.UK) violated (status = 1), SQL &lt;INSERT INTO &#34;SCHEMA&#34;.&#34;TABLE&#34; (&lt;INSERT HERE&gt;
+
+2011-10-24 19:58:15  WARNING OGG-01004  Aborted grouped transaction on &#39;SCHEMA.TABLE&#39;, Database error 1 (OCI Error ORA-00001: unique constraint (SCHEMA.UK) violated (status = 1), SQL &lt;INSERT HERE&gt;).
+
+2011-10-24 19:58:15  WARNING OGG-01003  Repositioning to rba 1502788 in seqno 3.
+
+2011-10-24 19:58:15  WARNING OGG-01154  SQL error 1 mapping SCHEMA.TABLE to SCHEMA.TABLE OCI Error ORA-00001: unique constraint (SCHEMA.UK) violated (status = 1), SQL &lt;INSERT HERE&gt;.
+
+2011-10-24 19:58:15  WARNING OGG-01003  Repositioning to rba 1502788 in seqno 3.
+</code></pre><p>1403 means that GoldenGate couldn’t find the record it wanted to update.</p>
+<p>00001 would mean that the record GoldenGate tried to insert was already there.</p>
+<p>In our case, as we used SCN method so none of them was expected. So these weird errors left us totally confused. Some guys suggested that expdp was not taking a consistent image and some transactions were getting overlapped (picked up by both expdp &amp; GG extract trail). We took the database down and repeated the exercise but oops ! it hit almost the same errors again. So it was not about consistency for sure.</p>
+<p>Till now we haven’t been examining the contents of discard file very seriously. As the errors were pretty simple so we always suspected that some transactions were getting overlapped. Now it was high time to take some help from discard file as well 😉 . We took the before/after image of the record from the discard file and checked it in the target database &amp; values in one or two columns were different (that is why GG couldn’t find that record). The new values were the actual hint towards the solution [It was a table storing the mail requests and their statuses. This update that GG was trying to run was updating the status from NOT-SENT TO SENT but here on the target the status was already set to ‘ORA-something……’]. We got the clue that something must have run on the target itself that spoiled this record and now GG is not able to find it and abending with 1403. select * from dba_jobs cleared it all. While doing the initial load with expdp/impdp, job also got imported and some of them were in not broken state. They were firing according to their schedule and making changes to data in the target. So before GG came to update/insert record the job had already done its game and the replicat was hitting different errors. We did the initial load again (this time by using flashback_scn in the running database), disabled all the jobs and ran the replicat. It went through without any errors.</p>
+<p>So things to take care of, in such cases:</p>
+<p>1) Disable all the triggers on the target side (or exclude triggers while running expdp)</p>
+<p>2) Look for and disable any scheduled jobs (could be dba_jobs, dba_scheduler_jobs or cron)</p>
+<p>Happy GoldenGate’ing !</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-03113 Refresh of a mview in Oracle 10g | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-03113 Refresh of a mview in Oracle 10g</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2008/01/03</h2>
+</div>
+
+<main>
+<p>At my workplace we were facing a problem with refresh of a mview. Say it was created in schema of user1 but when I tried to refresh it from user2 it would give <!-- raw HTML omitted -->ORA-03113: end-of-file on communication channel. <!-- raw HTML omitted -->Then we raised a SR and have been following up with Oracle support for long but it was not getting anywhere. Yesterday that guy seemed to have reached some point. The mviews that we have created and are having problem with refresh are created on top of both local &amp; remote objects and he said that up to 11gr2 there is no possibility of creating mviews on both local and remote objects. I did validate this thing. All the mviews failing to refresh are created on top of both local &amp; remote objects. But again from the owner the refresh is fine but from another user it gives problem. By the way that guy hinted at <a href="https://metalink.oracle.com/metalink/plsql/f?p=130:15:3284197721413823598::::p15_database_id,p15_docid,p15_show_header,p15_show_help,p15_black_frame,p15_font:BUG,4084125,1,1,1,helvetica">bug 4084125</a> and also suggested a work around. I haven’t tried that yet. Will try and update about the results.</p>
+<p>Sidhu</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

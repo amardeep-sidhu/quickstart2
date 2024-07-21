@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delete Delete Faster Faster ;) | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Delete Delete Faster Faster ;)</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2009/10/08</h2>
+</div>
+
+<main>
+<p>2-3 days ago, I came across a code, intended to make delete faster. Just have a look 😉</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;.
+.
+.
+LOOP
+SELECT COUNT (1)
+INTO v_cnt
+FROM table1
+WHERE ROWNUM &lt; 2;
+
+IF v_cnt = 0
+THEN
+EXIT;
+END IF;
+
+DELETE FROM table1
+WHERE ROWNUM &lt; 1000;
+
+COMMIT;
+v_cnt := 0;
+END LOOP;
+.
+.
+.
+</code></pre>
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

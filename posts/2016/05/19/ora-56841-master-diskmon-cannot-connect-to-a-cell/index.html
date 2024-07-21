@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-56841: Master Diskmon cannot connect to a CELL | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-56841: Master Diskmon cannot connect to a CELL</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2016/05/19</h2>
+</div>
+
+<main>
+<p>Faced this error while querying v$asm_disk after adding new storage cell IPs to cellip.ora on DB nodes of an existing cluster on Exadata. Query ends with <em>ORA-03113 end-of-file on communication channel</em> and <em>ORA-56841</em> is reported in <em>$ORA_CRS_HOME/log/&lt;hostname&gt;/diskmon/diskmon.log</em>. Reason in my case was that the new cell was using different subnet for IB. It was pingable from the db nodes but querying v$asm_disk wasn’t working. Changing the subnet for IB on new cell to the one on existing cells fixed the issue.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

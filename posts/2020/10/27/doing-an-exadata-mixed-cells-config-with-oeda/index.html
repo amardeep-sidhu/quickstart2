@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doing an Exadata mixed cells config with OEDA | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Doing an Exadata mixed cells config with OEDA</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2020/10/27</h2>
+</div>
+
+<main>
+<p>Earlier versions of OEDA didn’t allow you to have mixed cells in the configuration i.e. High Capacity (HC) and Extreme Flash (EF). The way to deal with that configuration was that deploy the system with either HC or EF cells and then manually configure the remaining cells.</p>
+<p>I am not sure when did it change but the newer versions allow you have mixed type of cells in a single OEDA configuration. Once you select the hardware, there is an additional option called <strong>Enable Additional Storage</strong>, where you can select the other type of cells. The minimum number of cells has to be three to use this option. Also the cells that are at the bottom of the rack physically should be selected as main storage and the other cells should be added as additional storage as that is how OEDA builds the configuration files.</p>
+<p><img src="../../../../uploads/2020/10/image.png" alt="">Once this is selected, on the Diskgroups screen, select Diskgroup layout as custom and you can create multiple diskgroups and select cells for each diskgroup (as EF &amp; HC cells can’t be part of the same diskgroup).</p>
+<p><img src="../../../../uploads/2020/10/image-1.png" alt=""><img src="../../../../uploads/2020/10/image-2.png" alt="">Once the configuration is generated, it can be deployed with OneCommand without any manual intervention. A small feature but makes life easier by getting rid of all the manual steps.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

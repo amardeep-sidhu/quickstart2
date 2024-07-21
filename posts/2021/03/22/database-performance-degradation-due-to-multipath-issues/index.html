@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Database performance degradation due to multipath issues | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Database performance degradation due to multipath issues</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2021/03/22</h2>
+</div>
+
+<main>
+<p>To put it in bit of an Indian context, database is not your daughter-in-law that you can blame it for every performance issue that occurs in the environment. But it does happen. Most of the time it is the database that is blamed for all such issues. Many times, the issues are in some other layer like OS, network or storage.</p>
+<p>Faced this issue recently at one of the customer sites where performance in one of the databases went down suddenly. It was a 2 node RAC on 12.1.0.2 running on Linux 7 using some kind of Hitachi SSD storage array. There were no changes as per DBA, application, OS and storage teams. But something must have changed somewhere. Otherwise why would performance degrade just like that. I &amp; my colleague checked some details and found that something happened in the morning a day before. Starting from that point in time, the execution time for all the commonly run queries shot up. Generally speaking, when all the queries are doing bad and you are sure that nothing has been changed on the database side, the reasons could be outside the database. But being a DBA, it is not easy to prove that. We took AWRs from good and bad times and the wait events section looked like this:</p>
+<!-- raw HTML omitted -->
+<p>The conference calls continued and we were not reaching anywhere. Storage team as usual said that everything was fine and there were no issues. Finally the discussion moved to multipathing and the teams started checking in that direction. There were errors like this in /var/log/messages</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>So it is always not the database. It is unfair to always blame the DBA !</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

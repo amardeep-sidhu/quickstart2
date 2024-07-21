@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spool to a .xls (excel) file&amp;#8230; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Spool to a .xls (excel) file…</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/06/16</h2>
+</div>
+
+<main>
+<p>A small tip, I read on <a href="http://forums.oracle.com/forums/thread.jspa?messageID=1849526">OTN</a> about spooling to a .xls (excel) file:</p>
+<p>It goes like this</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;set feed off markup html on
+spool onspool c:\salgrade.xls
+select * from salgrade;
+spool offset markup html off
+spool off
+</code></pre><p>And the xls it makes shows up like:</p>
+<pre tabindex="0"><code>&lt;a href=&#34;http://bp2.blogger.com/_cX21i_8-MT4/RnLaSNXaVrI/AAAAAAAAACM/nxm6jQbYTak/s1600-h/xls.JPG&#34; onblur=&#34;try {parent.deselectBloggerImageGracefully();} catch(e) {}&#34;&gt;&lt;img alt=&#34;&#34; border=&#34;0&#34; decoding=&#34;async&#34; id=&#34;BLOGGER_PHOTO_ID_5076359736360326834&#34; src=&#34;http://bp2.blogger.com/_cX21i_8-MT4/RnLaSNXaVrI/AAAAAAAAACM/nxm6jQbYTak/s320/xls.JPG&#34; style=&#34;margin: 0px auto 10px; display: block; text-align: center; cursor: pointer&#34;&gt;&lt;/img&gt;&lt;/a&gt;
+</code></pre><p><img src="" alt="">Sidhu</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Adding a new cell to Exadata with asm scoped security enabled | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Adding a new cell to Exadata with asm scoped security enabled</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2022/05/09</h2>
+</div>
+
+<main>
+<p>A customer is using an Exadata X8M-2 machine with multiple VMs (hence multiple clusters). I was working on adding a new storage cell to the configuration. After creating griddisks on the new cell and updating cellip.ora on all the VMs, I noticed that none of the clusters was able to see the new griddisks. I checked the usual suspects like if asm_diskstring was set properly, private network subnet mask on new cell was same as the old ones. All looked good. I started searching about the issue and stumbled upon some references mentioning <a href="https://mudasirhakakblog.wordpress.com/2019/03/01/asm-scoped-security/">ASM scoped security</a>. I checked on one of the existing cells and that actually was the issue. The existing nodes had it enabled while the new one hadn’t. Running this command on an existing cell</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;wp-block-code&#34;&gt;```
+cellcli -e list key detail
+
+name:
+key:		c25a62472a160e28bf15a29c162f1d74
+type:		CELL
+
+name:		cluster1
+key:		fa292e11b31b210c4b7a24c5f1bb4d32
+type:		ASMCLUSTER
+
+name:		cluster2
+key:		b67d5587fe728118af47c57ab8da650a	
+type:		ASMCLUSTER 
+</code></pre><pre tabindex="0"><code>
+We need to enable ASM scoped security on the new cell as well. There are three things that need to be done. We need to copy /etc/oracle/cell/network-config/cellkey.ora from an existing cell to the new cell, assign the key to the cell and then assign keys to the different ASM clusters. We can use these commands to do it
+</code></pre><!-- raw HTML omitted -->
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

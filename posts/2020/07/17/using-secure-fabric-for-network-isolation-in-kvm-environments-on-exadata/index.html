@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Using Secure Fabric for network isolation in KVM environments on Exadata | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Using Secure Fabric for network isolation in KVM environments on Exadata</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2020/07/17</h2>
+</div>
+
+<main>
+<p>Exadata storage software version 20.1 introduces a new feature called “Secure Fabric” for KVM based multi cluster deployments (Exadata X8M). It enables network isolation between multiple tenants (i.e. KVM VMs based RAC clusters). This feature aligns with Infiniband Partitioning on OVM based systems. There are customers who in such scenarios want that VMs of one RAC shouldn’t be able to see traffic of the other RAC VMs. This feature achieves that. Similar to Pkeys in IB switches, here it uses a double VLAN tagging system where the first tag identiefies the network partition and the second tag is used to denote membership level of the VM. <a href="https://docs.oracle.com/en/engineered-systems/exadata-database-machine/dbmin/exadata-network-requirements.html#GUID-75CC8740-CC7F-4A7B-B69B-B93E927E80EC">Exadata documention</a> has more details.</p>
+<p>The minimum Exadata software version needed to enable this feature is 20.1. This release comes with RoCE switches firmware version 7.0(3)I7(8).</p>
+<p>Starting Jun 2020, OEDA supports this configuraion and this feature can be enabled in OEDA itself. To enable it in OEDA, under Cluster Networks click on the Advanced button and you will see the Enable Secure Fabric option.</p>
+<p><img src="../../../../uploads/2020/07/image.png" alt="">Once this option is enabled, you will see VLANs enabled for the private network. While doing the deployment, OneCommand will take care of the configuration needed.</p>
+<p><img src="../../../../uploads/2020/07/image-1.png" alt="">As per <a href="https://docs.oracle.com/en/engineered-systems/exadata-database-machine/dbmin/exadata-network-requirements.html#GUID-45F7E8CC-B19A-4848-9721-8539EE1AAF07">documentation</a>, at present there is no way to enable it on existing systems except doing a re-deployment.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

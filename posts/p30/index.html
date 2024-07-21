@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Moving datafiles,control files and log files-2 | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Moving datafiles,control files and log files-2</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/07/21</h2>
+</div>
+
+<main>
+<p>In my <a href="http://amardeepsidhu.blogspot.com/2007/07/moving-data-filescontrol-files-and-log.html">last post</a> I discussed about moving datafiles. But if we want to move control files and redo files also, then the scenario is bit different. Lets see an example of the same. The current scenario is as follows:</p>
+<pre tabindex="0"><code>SQL&gt; select * from v$logfile;GROUP# STATUS  TYPE    MEMBER---------- ------- ------- ------------------------------------ 3 STALE   ONLINE  C:\ORACLE\ORADATA\ORCL1\REDO03.LOG 2         ONLINE  C:\ORACLE\ORADATA\ORCL1\REDO02.LOG 1         ONLINE  C:\ORACLE\ORADATA\ORCL1\REDO01.LOG
+
+SQL&gt; select * from v$controlfile;
+
+STATUS  NAME------- -------------------------------------------------------C:\ORACLE\ORADATA\ORCL1\CONTROL01.CTLC:\ORACLE\ORADATA\ORCL1\CONTROL02.CTLC:\ORACLE\ORADATA\ORCL1\CONTROL03.CTL
+
+SQL&gt; select tablespace_name,file_name from dba_data_files;
+
+TABLESPACE_NAME                FILE_NAME------------------------------ --------------------------------------SYSTEM                         C:\ORACLE\ORADATA\ORCL1\SYSTEM01.DBFUNDOTBS1                       C:\ORACLE\ORADATA\ORCL1\UNDOTBS01.DBFCWMLITE                        C:\ORACLE\ORADATA\ORCL1\CWMLITE01.DBFDRSYS                          C:\ORACLE\ORADATA\ORCL1\DRSYS01.DBFEXAMPLE                        C:\ORACLE\ORADATA\ORCL1\EXAMPLE01.DBFINDX                           C:\ORACLE\ORADATA\ORCL1\INDX01.DBFODM                            C:\ORACLE\ORADATA\ORCL1\ODM01.DBFTOOLS                          C:\ORACLE\ORADATA\ORCL1\TOOLS01.DBFUSERS                          C:\ORACLE\ORADATA\ORCL1\USERS01.DBFXDB                            C:\ORACLE\ORADATA\ORCL1\XDB01.DBF
+
+10 rows selected.
+
+SQL&gt;
+</code></pre><p>Suppose I want to move all the files to C:\oracle\orcl1 The very first thing I need to do is creating copy of control file:</p>
+<pre tabindex="0"><code>SQL&gt; alter database backup controlfile to trace;Database altered.
+
+SQL&gt;
+</code></pre><p>It will give us the text to create control file. Here we can change the paths of datafiles and log files and create control file with updated paths.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

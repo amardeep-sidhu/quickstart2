@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-06502: PL/SQL: numeric or value error: host bind array too small | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-06502: PL/SQL: numeric or value error: host bind array too small</span></h1>
+<h2 class="author">admin</h2>
+<h2 class="date">2008/02/16</h2>
+</div>
+
+<main>
+<p>Yesterday, I was troubleshooting a PL/SQL procedure which was giving <em>ORA-06502: PL/SQL: numeric or value error: host bind array too small.</em> Another procedure was being called from within the first one. Finally after some struggle, I was able to find out that there was an insert [inserting to a table on a remote database (say B)] which was causing the whole trouble.</p>
+<p>I ran the insert statement in SQL* Plus and it showed a trigger failing [on the table which was being inserted data into]. So there was all the secret 😉 Actually there was an <em>on insert</em> trigger [on the table, in the remote database] which was selecting a value from a sequence on the remote [the first] database and code was written like</p>
+<p>&lt;code&gt;select SEQUENCE. CURRVAL blah blah &lt;/code&gt;</p>
+<p>As the thing was being done remotely, so it was a new session and doing SEQUENCE.CURRVAL before SEQUENCE.NEXTVAL was not possible. But the NEXTVAL thing will increment</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

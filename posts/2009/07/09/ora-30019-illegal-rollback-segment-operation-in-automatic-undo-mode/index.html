@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-30019: Illegal rollback Segment operation in Automatic Undo mode | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-30019: Illegal rollback Segment operation in Automatic Undo mode</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2009/07/09</h2>
+</div>
+
+<main>
+<p>Today i was refreshing a MVIEW (Oracle 9.2.0.1.0 on Windows 2000) and instead of writing</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;exec dbms_mview.refresh(&#39;SCHEMA1.MVIEW1&#39;,&#39;C&#39;); 
+</code></pre><p>i wrote</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;exec dbms_mview.refresh(&#39;SCHEMA1&#39;,&#39;MVIEW1&#39;,&#39;C&#39;);
+</code></pre><p>And it gave me:</p>
+<!-- raw HTML omitted -->
+<pre tabindex="0"><code>&lt;span style=&#34;font-family: Georgia; line-height: 19px; white-space: normal; font-size: 13px;&#34;&gt;which has nothing to do with the real error. Take care !&lt;/span&gt;
+</code></pre>
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

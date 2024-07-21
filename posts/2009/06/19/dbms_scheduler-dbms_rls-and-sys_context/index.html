@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DBMS_SCHEDULER, DBMS_RLS and SYS_CONTEXT | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">DBMS_SCHEDULER, DBMS_RLS and SYS_CONTEXT</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2009/06/19</h2>
+</div>
+
+<main>
+<p>Today one of my colleague was working on development of a screen in Oracle Forms to give the end user an option to schedule a job using dbms_scheduler. With the hope that i would be able to explain it properly, the whole scenario is like this:</p>
+<ol>
+<li>User will log in to the application with his username (Lets say USER01) and password (basically every application user is a database user).</li>
+<li>He is provided with a screen where he can enter details about the job and the code behind the button calls a PL/SQL procedure in the main application schema (lets say APP1) which in turn uses DBMS_SCHEDULER.CREATE_JOB to schedule the new job.</li>
+<li>The ultimate task of the job is to move data from one table in the first database to a table in the second database using a DB Link.</li>
+<li>There is a VPD policy applied on all the application users to restrict the view of data. Policy function uses SYS_CONTEXT to fetch some information about the logged in user. The main application user APP1 is exempted from policy and can see the whole data.</li>
+</ol>
+<p>Things seem to work fine till the schedule part. But when the job runs it hits <em><strong>ORA-02070: database does not support operator SYS_CONTEXT in this context</strong></em> as SYS_CONTEXT and DB link doesn’t go together.</p>
+<p>I did a bit of troubleshooting and came to know that the job gets created with JOB_CREATOR (a field in DBA_SCHEDULER_JOBS) as the user who is logged in (ie USER001). Now when the job runs from USER001, there is a VPD policy which is going to append a where clause to the query and there is a DB link being used, hence <strong>ORA-02070</strong>.</p>
+<p>So the way out would be to schedule and run the job from some user that has no VPD policy applied to it. The best choice would obviously be the main application user; APP1 but as the user logs in with his own username so the job would always be created with JOB_CREATOR as USER001. After a bit of thought provoking an idea hit me:</p>
+<p>Create a table in the APP1 schema. Now when the user schedules the job, insert the values of the parameters required to schedule the job in the table. Schedule one master job in APP1 schema which would read this table and in turn call DBMS_SCHEDULER.CREATE_JOB to schedule the job required by the user. Now as there is no policy applied on the APP1 database user so the job is not going to hit <strong>ORA-02070</strong>. The frequency of the master job can be set as per the requirements. To identify which entries in the table have been processed either keep a flag which can be updated or delete the record from the table after scheduling.</p>
+<p>That is how it clicked in my mind at that time. Suggestions about any other better (or worse 😉 ) methods are welcome 🙂</p>
+<p><strong>PS:</strong> About the title: Nothing really was coming into my mind so i picked up the all three words and titled it DBMS_SCHEDULER, DBMS_RLS and SYS_CONTEXT 🙂</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

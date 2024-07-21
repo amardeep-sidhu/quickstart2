@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-39083: Object type INDEX failed to create with error | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-39083: Object type INDEX failed to create with error</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2010/12/04</h2>
+</div>
+
+<main>
+<p>Another let-us-help-Google post ;).</p>
+<p>While running impdp import in 11g, you hit:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;ORA-39083: Object type INDEX failed to create with error:
+ORA-14102: only one LOGGING or NOLOGGING clause may be specified
+</code></pre><p>It is related to bug 9015411 where DBMS_METADATA.GET_DDL creates incorrect create index statement by dumping both LOGGING and NO LOGGING clauses. Due to this the CREATE INDEX statement, while running impdp fails with the above error. It applies to 11.2.0.1 (Metalink doc id 1066635.1)</p>
+<p>Fix is to install the patch, if it is available for your platform. Another workaround is given in <a href="http://forums.oracle.com/forums/thread.jspa?messageID=4512555">this OTN thread</a> i.e. strip the create index statement of storage related information by using TRANSFORM=SEGMENT_ATTRIBUTES:N:INDEX &amp; TRANSFORM=SEGMENT_ATTRIBUTES:N:CONSTRAINT</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

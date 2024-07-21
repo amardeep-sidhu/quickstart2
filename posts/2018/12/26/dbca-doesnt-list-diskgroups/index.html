@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dbca doesn&amp;#8217;t list diskgroups | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">dbca doesn’t list diskgroups</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2018/12/26</h2>
+</div>
+
+<main>
+<p>This is an Exadata machine running GI version 18.3.0.0.180717 and DB version 12.1.0.2.180717. On one of the DB nodes while running dbca, it doesn’t list the diskgroups. it works fine on the other node.</p>
+<p>I cheked the dbca trace and found that the kfod command was failing. I tried to run it manually and got the same error:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;wp-block-code&#34;&gt;```
+[oracle@exadb01 ~]$ /u01/app/18.0.0.0/grid/bin/kfod op=groups verbose=true
+KFOD-00300: OCI error [-1] [OCI error] [Could not fetch details] [-105777048]
+
+KFOD-00105: Could not open pfile &#39;init@.ora&#39;
+[oracle@exadb01 ~]$
+</code></pre><pre tabindex="0"><code>
+I ran it with strace then:
+</code></pre><!-- raw HTML omitted -->
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

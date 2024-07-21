@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Extended memory VM instances in OCI | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Extended memory VM instances in OCI</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2023/09/21</h2>
+</div>
+
+<main>
+<p>While provisioning compute instances in OCI, you may come across scenarios which need more memory and cores than what the standard shapes provide. Extended memory VMs are meant to solve that problem. Such VMs are able to access cores and memory across a single physical socket and it allows them to go beyond the limits of standard shapes. There are no additional charges for using this specific feature. Customer is charged on the basis of total number of cores and total amount of memory used.</p>
+<p>On the provisioning screen, the sliders for selecting number of cores and amount of memory allow you to go beyond the limits for standard shapes. Once you cross the limit of a standard shape, the instances becomes an extended memory instance.</p>
+<!-- raw HTML omitted -->
+<ul>
+<li>Not all shapes support extended memory instances. Currently it is supported with VM.Standard3.Flex, VM.Standard.E3.Flex and VM.Standard.E4.Flex</li>
+<li>Extended memory instances don’t support burstable feature.</li>
+<li>Capacity reservations aren’t available with Extended memory instances.</li>
+<li>Preemptible instances don’t work with this feature.</li>
+<li>To take advantage of the extended memory, it is important to make the application NUMA aware when it is deployed on a Extended memory instance.</li>
+</ul>
+<p>More details about extended memory instances are available in the <a href="https://docs.oracle.com/en-us/iaas/Content/Compute/References/extended-memory-vm-instances.htm">official documentation page</a>.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Missing grants | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Missing grants</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2008/03/03</h2>
+</div>
+
+<main>
+<p>Today one of my colleague was working on a simple PL/SQL procedure. Based on some logic it was returning count(*) from all_tab_columns for few tables. It gave count incorrectly for one table out of around fifty in total. He just hard coded the table name and ran it but again it showed count as zero.</p>
+<p>Then he took the code out of procedure and wrote it in DECLARE, BEGIN, END and after running it showed the correct count. But ran as database procedure it always shows incorrectly.</p>
+<p>Finally just as hit and trial, he gave SELECT on the TABLE to database user [Table was in different schema], used to run the procedure and everything was ok. Isn’t it bit stupid 🙂</p>
+<p><strong>Update:</strong> Well, it happens for a reason. <a href="http://preferisco.blogspot.com/">Nigel Thomas</a> pointed out in the comment. The reason is that privileges granted to a role are not seen from PL/SQL stored procedures. You need to give direct grant to the user for this or another method is to define the procedure or package with invoker rights.</p>
+<p>Thanks Nigel 🙂</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

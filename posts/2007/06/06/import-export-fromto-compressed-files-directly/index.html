@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IMPORT &amp;amp; EXPORT from/to compressed files directly&amp;#8230; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">IMPORT &amp; EXPORT from/to compressed files directly…</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/06/06</h2>
+</div>
+
+<main>
+<p>Well, a simple method to import(export) directly to(from) compressed files using pipes. Its for Unix based systems only, as I am not aware of any pipe type functionality in Windows. The biggest advantage is that you can save lots of space as uncompressing a file makes it almost 5 times or more. (Suppose you are uncompressing a file of 20 GB, it will make 100 GB) As a newbie I faced this problem, so thought about writing a post.</p>
+<p>Lets talk about export first. The method used is that create a pipe, write to a pipe(ie the file in exp command is the pipe we created), side by side read the contents of pipe, compress (in the background) and redirect to a file. Here is the script that achieves this:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;export ORACLE_SID=MYDB
+rm -f ?/myexport.pipe
+mkfifo ?/myexport.pipe
+cat ?/myexport.pipe |compress &gt; ?/myexport.dmp.Z &amp;amp;amp;
+sleep 5
+exp file=?/myexport.pipe full=Y log=myexport.log
+</code></pre><p>Same way for import, we create a pipe, zcat from the dmp.Z file, redirect it to the pipe and then read from pipe:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;export ORACLE_SID=MYDB
+rm -f ?/myimport.pipe
+mkfifo ?/myimport.pipe
+zcat ?/myexport.dmp.Z &gt; ?/myimport.pipe &amp;amp;amp;
+sleep 5
+imp file=myimport.pipe full=Y show=Y log=?/myimport.log
+</code></pre><p>In case there is any issue with the script, do let me know 🙂</p>
+<p><!-- raw HTML omitted -->Update:<!-- raw HTML omitted --> If you are on Wintel, you can directly use a compressed folder as an export target. No need to create a pipe as the file system will automatically do it for you. ( Thanks <a href="http://dbasrus.blogspot.com/">Noons</a> for the tip)</p>
+<p><strong>If you are using gunzip:</strong></p>
+<p>For export:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;export ORACLE_SID=MYDB
+rm -f exp.pipe
+mknod exp.pipe
+gzip &lt; exp.pipe &gt; T1.dmp.gz &amp;amp;amp;
+exp file=exp.pipe full=Y log=myexport.log
+</code></pre><p>For import:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;export ORACLE_SID=MYDB
+rm -f imp.pipe
+mknod imp.pipe
+gzip &lt; T1.dmp.gz &gt; imp.pipe &amp;amp;amp;
+imp file=imp.pipe full=Y log=myimport.log
+</code></pre><p><strong>Update:</strong> I came across an article that discusses few ways to achieve the same on Windows. Check it <a href="http://jcarlossaez.spaces.live.com/blog/cns!B3378F057444B65C!108.entry">here</a>.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

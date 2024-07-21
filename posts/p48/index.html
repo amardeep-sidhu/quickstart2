@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-01537: cannot add file &amp;#8211; file already part of database | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-01537: cannot add file – file already part of database</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2008/01/29</h2>
+</div>
+
+<main>
+<p>Today one of my friends called me to ask about<!-- raw HTML omitted --> ORA-01537: cannot add file ‘c:\test1.dbf’ – file already part of database.<!-- raw HTML omitted --> The simple reason for this could be that the datafile I am trying to add to a tablespace is already there. But no, in this case it was not like this. The tablespace was not there in DBA_TABLESPACES but the datafile was there in DBA_DATA_FILES and V$DATAFILE. Also the file has been physically deleted from the disk.</p>
+<p>So while trying to create the same tablespace with same datafile, it was giving ORA-01537.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

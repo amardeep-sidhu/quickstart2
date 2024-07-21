@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Import ORA-01435: user does not exist&amp;#8230; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Import ORA-01435: user does not exist…</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/07/14</h2>
+</div>
+
+<main>
+<p>One may encounter this error while importing from a dmp file from older versions of Oracle. Genereally this error is caused by some statement like <!-- raw HTML omitted -->alter session set current_schema=scott; <!-- raw HTML omitted -->And the simple reason is that the user <!-- raw HTML omitted -->scott<!-- raw HTML omitted --> doesn’t exist. Yesterday I came across this error. And the reason was that user was not created. As in case of import we generally create tablespaces first (by creating the DDL using option show=Y) but creation of users is done by import itself. In older versions of Oracle, the temp tablespaces were no different from other tablespaces. But in newer versions temp tablespaces are different. So in dmp files from thoese older versions <!-- raw HTML omitted -->create user <!-- raw HTML omitted -->statements are written like <!-- raw HTML omitted -->create user t1 identified by t1 default tablespace temp temporary tablespace temp. <!-- raw HTML omitted -->This thing worked fine in older versions but in newer versions we cannot specify the TEMP tablespace as the default tablespace for a user. So the statement create <!-- raw HTML omitted -->user t2 identified by t2 default tablespace temp temporary tablespace temp<!-- raw HTML omitted --> throws <!-- raw HTML omitted -->ORA-12910: cannot specify temporary tablespace as default tablespace. <!-- raw HTML omitted -->In such cases the users (for which default statement is specified as TEMP) have to be created manually by specifying the appropriate tablespace as default tablespace and then the import should be run with ignore=Y.</p>
+<p>Sidhu</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

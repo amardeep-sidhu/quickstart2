@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Is multiplication faster than division ? | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Is multiplication faster than division ?</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/06/18</h2>
+</div>
+
+<main>
+<p>An interesing post by Laurent. Check out <a href="http://laurentschneider.com/wordpress/2007/06/to-divide-or-to-multiply.html">http://laurentschneider.com/wordpress/2007/06/to-divide-or-to-multiply.html</a></p>
+<p>My findings on 10gR2 on Windoze XP</p>
+<pre tabindex="0"><code>&lt;br&gt;&lt;/br&gt;SQL&gt; var z number&lt;br&gt;&lt;/br&gt;SQL&gt; var y number&lt;br&gt;&lt;/br&gt;SQL&gt; exec :z := power(2,102)*2e-31;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;PL/SQL procedure successfully completed.&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;SQL&gt; exec :y := 1e125;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;PL/SQL procedure successfully completed.&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;SQL&gt; set timi on&lt;br&gt;&lt;/br&gt;SQL&gt; exec while (:y&gt;1e-125) loop :y:=:y/:z; end loop&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;PL/SQL procedure successfully completed.&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;b style=&#34;color: rgb(255, 0, 0);&#34;&gt;Elapsed: 00:00:00.10&lt;/b&gt;&lt;br&gt;&lt;/br&gt;SQL&gt; set timi off&lt;br&gt;&lt;/br&gt;SQL&gt; print y&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;      Y&lt;br&gt;&lt;/br&gt;----------&lt;br&gt;&lt;/br&gt;9.988E-126&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;SQL&gt; exec :z := power(2,-104)*2e31;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;PL/SQL procedure successfully completed.&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;SQL&gt; exec :y := 1e125;&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;PL/SQL procedure successfully completed.&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;SQL&gt; set timi on&lt;br&gt;&lt;/br&gt;SQL&gt; exec while (:y&gt;1e-125) loop :y:=:y*:z; end loop&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;PL/SQL procedure successfully completed.&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;&lt;b style=&#34;color: rgb(255, 0, 0);&#34;&gt;Elapsed: 00:00:00.04&lt;/b&gt;&lt;br&gt;&lt;/br&gt;SQL&gt; set timi off&lt;br&gt;&lt;/br&gt;SQL&gt; print y&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;      Y&lt;br&gt;&lt;/br&gt;----------&lt;br&gt;&lt;/br&gt;9.988E-126&lt;br&gt;&lt;/br&gt;&lt;br&gt;&lt;/br&gt;SQL&gt;&lt;br&gt;&lt;/br&gt;
+</code></pre><p>Sidhu</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

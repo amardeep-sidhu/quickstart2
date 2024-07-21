@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DML and HCC &amp;#8211; Exadata | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">DML and HCC – Exadata</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2011/12/22</h2>
+</div>
+
+<main>
+<p>Hybrid Columnar Compression (HCC) is a new awesome feature in Exadata that helps in saving a lot of storage space in your environment. <a href="http://www.oracle.com/technetwork/middleware/bi-foundation/ehcc-twp-131254.pdf">This whitepaper</a> on Oracle website explains this feature in detail. Also Uwe Hesse has an excellent <em>how to use all this</em> <a href="http://uhesse.wordpress.com/2011/01/21/exadata-part-iii-compression/">post on his blog</a>. You can see the compression levels one can achive by making use of HCC. It is very simple to use feature but one needs to be aware of few things before using HCC extensively as otherwise all your storage calculations may go weird. Here are few of the things to keep in mind:</p>
+<ul>
+<li>
+<p>HCC works with direct path loads only that includes: CTAS, running impdp with ACCESS_METHOD=DIRECT or direct path inserts. If you insert data using a normal insert, it will not be HCC compressed.</p>
+</li>
+<li>
+<p>It is most suited for tables that aren’t going to be updated once loaded. There are some complications (next point) that arise if some DML is going to be run on HCC compressed data.</p>
+</li>
+<li>
+<p>At block level HCC stores data as compression units. A compression unit can be defined as a set of blocks. Now if some rows (stored with HCC) are updated, they need to be decompressed first. Also in that case the database needs to read the compression unit, not a single block. So once you do some update on the data stored in HCC, it will be moved out of HCC compression. To HCC compress it again you will need to do <em>alter table table_name move compress for</em> (Also see Metalink note 1332853.1)<em>.</em> So if the tables you are planning to use HCC upon, undergo frequent DML, HCC may not be best suited for that scenario. Not only it will add the additional overhead of running <em>alter table move</em> statement every time some updates happen, it may screw up the storage space calculations as well.</p>
+</li>
+</ul>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

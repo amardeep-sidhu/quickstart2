@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MRP process on standby stops with ORA-00600 | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">MRP process on standby stops with ORA-00600</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2015/08/20</h2>
+</div>
+
+<main>
+<p>A rather not so great post about an ORA-00600 error i faced on a standby database. Environement was 11.2.0.3 on Sun Super Cluster machine. MRP process was hitting ORA-00600 while trying to apply a specific archive log.</p>
+<p>The error message was something like this</p>
+<pre tabindex="0"><code>MRP0: Background Media Recovery terminated with error 600
+Errors in file /u01/app/oracle/product/11.2.0.3/diag/diag/rdbms/xxxprd/xxxprd1/trace/xxxprd1_pr00_6342.trc:
+ORA-00600: internal error code, arguments: &lt;span style=&#34;color: #ff0000;&#34;&gt;&lt;strong&gt;[2619]&lt;/strong&gt;&lt;/span&gt;, [539], [], [], [], [], [], [], [], [], [], []
+Recovery interrupted!
+</code></pre><p>Some googling and MOS searches revealed that the error was due to corrupted archive log file. Recopying the archive file from primary and restarting the recovery resolved the issue. The fist argument of the ORA-600 is actually the sequence no of the archive it is trying to apply.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

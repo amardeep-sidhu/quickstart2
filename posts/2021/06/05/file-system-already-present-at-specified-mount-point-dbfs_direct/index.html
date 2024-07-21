@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>File system already present at specified mount point /dbfs_direct | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">File system already present at specified mount point /dbfs_direct</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2021/06/05</h2>
+</div>
+
+<main>
+<p>It was actually funny. So thought about posting it that sometimes how we can miss the absolute basics. This customer is using a virtualized Exadata with multiple VMs. One VM hosts the database meant to be used for dbfs and another VM connects to this DB over IB to mount dbfs file system using dbfs_client. One day VMs were rebooted and due to some reason the dbfs filesystem didn’t mount on startup. It went on for few days and they couldn’t mount it. One day I got a chance to look at it and the error they were facing was:</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Then after closing the session, I was thinking that what could have happened as this dbfs mount point has been in use for long. Then it struck me. It was being used to take some RMAN backups and the path was hard coded in the scripts. When it didn’t mount after the reboot (i don’t know why), someone ran that script and whatever directories it didn’t find, it probably created that complete directory structure and tried to write to a log file. Once /dbfs_direct had those files, it anyway was not going to mount.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

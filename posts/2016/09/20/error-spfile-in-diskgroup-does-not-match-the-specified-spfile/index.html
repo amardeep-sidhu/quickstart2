@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ERROR: SPFile in diskgroup &lt;&gt; does not match the specified spfile | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ERROR: SPFile in diskgroup &lt;&gt; does not match the specified spfile</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2016/09/20</h2>
+</div>
+
+<main>
+<p>Just a stupid error. Posting it so that someone else googling for the same thing can get a clue.</p>
+<p>An ASM instance running with default parameters (no pfile, no spfile). Updated spfile for the instance with asmcmd spset command and bounced crs. After reboot also, it still wasn’t using spfile. Got puzzled and checked GPnP settings again. All looked good. Then in alert log came across this</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: plain; title: ; notranslate&#34; title=&#34;&#34;&gt;ERROR: SPFile in diskgroup &lt;&gt; does not match the specified spfile +DATA/asm/asmparameterfile/registry.253.769187275
+</code></pre><p>The problem was that while copying the spfile path the complete name didn’t get copied. The last character got missed. So the filename that it was looking for wasn’t there. Updating GPnP with correct filename and bouncing crs resolved the issue.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

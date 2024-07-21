@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Importing a full database&amp;#8230; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Importing a full database…</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/08/18</h2>
+</div>
+
+<main>
+<p>Many times, we are required to restore a database from an export dmp file. Its a simple task but sometimes there are some issues left like invalid objects or some objects missing, in the newly created database. Following steps, followed in order can help in creating an error free database:</p>
+<ol>
+<li><!-- raw HTML omitted -->Create a blank database:<!-- raw HTML omitted --><!-- raw HTML omitted --> <!-- raw HTML omitted -->The very first step is to create a blank database which is to be used as the target database. That can be done using <!-- raw HTML omitted -->Database Configuration Assistant. <!-- raw HTML omitted --><!-- raw HTML omitted -->(In last step of the DBCA, change redo log file sizes to 500 MB each (or some appropriate values depdening upon the size of the databaes), as during import, lot of redo will be generated, so large redo size helps in that scenario)<br>
+<!-- raw HTML omitted --><!-- raw HTML omitted --><br>
+<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->Extract DDLs and create tablespaces: <!-- raw HTML omitted --><!-- raw HTML omitted -->Now run the import with <!-- raw HTML omitted -->show=Y <!-- raw HTML omitted -->option and create a log of all DDL statements. The main things to be looked for in the log are DDLs to create tablespaces and DB links. You may need to change the create tablespace statements according to the version of the Oracle you are using. If you have the export taken in an older version, where dictionary tablespaces were being used, you will need to change the statements accordingly, to create locally managed tablespaces.<br>
+(If you have the dmp file in compressed (.Z) format check <a href="http://amardeepsidhu.com/blog/2007/06/06/import-export-fromto-compressed-files-directly">here</a>, to run the import directly from compressed file) <!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Adjust the size of SYSTEM, TEMP, USERS and UNDO: <!-- raw HTML omitted -->As SYSTEM, TEMP, USERS and UNDO tablespaces will get created with the database itself, so you can alter the sizes as per the sizes in the old database. <!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted -->Edit tnsnames.ora and create dblinks: <!-- raw HTML omitted --><!-- raw HTML omitted -->Now edit tnsnames.ora to include all the databases used in the db links and create db links using the statements from DDL log. <!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted -->Run the import: <!-- raw HTML omitted --><!-- raw HTML omitted -->Finally, run the import with <!-- raw HTML omitted -->FULL=Y<!-- raw HTML omitted --> and <em>IGNORE=Y</em> options and after the import finishes, look for any errors in the log. At last, compile all the invalid objects in the database (<a href="http://philly.astroboy.fr/index.php?page=oracle/misc">Here</a> is the link to a script to compile all the invalid objects). (If the import terminates with ORA-01435, then have a look at <a href="http://amardeepsidhu.com/blog/2007/07/14/import-ora-01435-user-does-not-exist">this post</a>.)<!-- raw HTML omitted --><!-- raw HTML omitted --><!-- raw HTML omitted --></li>
+</ol>
+<p>To read about all the options with <!-- raw HTML omitted -->imp<!-- raw HTML omitted --> have a look at <a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14215/exp_imp.htm#i1023560">Original Import &amp; Export</a><a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14215/exp_imp.htm#i1023560"> Utilities</a> chapter of <a href="http://download.oracle.com/docs/cd/B19306_01/server.102/b14215/toc.htm">Oracle Utilities guide</a>.</p>
+<p>Sidhu</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Oracle RAC 12.1 &amp;#8211; lsnodes exited with code 9 | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Oracle RAC 12.1 – lsnodes exited with code 9</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2017/03/28</h2>
+</div>
+
+<main>
+<p>I was trying to do a 2 node RAC setup on Solaris 11.3 where Oracle Solaris Cluster 4.3 was already configured. Installed was running but the Cluster Node Information screen was appearing like this</p>
+<p><a href="http://amardeepsidhu.com/blog/wp-content/uploads/2017/03/error.jpg"><img src="http://amardeepsidhu.com/blog/wp-content/uploads/2017/03/error_thumb.jpg" alt="error" title="error"></a></p>
+<p>The install log shows this:</p>
+<p><!-- raw HTML omitted -->INFO: Checking cluster configuration details<!-- raw HTML omitted --></p>
+<p><strong><!-- raw HTML omitted -->INFO: Found Vendor Clusterware. Fetching Cluster Configuration<!-- raw HTML omitted --></strong></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --><strong>INFO: Executing [/tmp/OraInstall2017-03-28_12-50-48PM/ext/bin/lsnodes]</strong><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->with environment variables {TERM=xterm, LC_COLLATE=, SHLVL=3, JAVA_HOME=, XFILESEARCHPATH=/usr/dt/app-defaults/%L/Dt, SSH_CLIENT=172.16.64.55 56370 22, LC_NUMERIC=, LC_MESSAGES=, MAIL=/var/mail/oracle, PWD=/export/software/grid/grid, XTERM_VERSION=XTerm(320), WINDOWID=2097165, LOGNAME=oracle, _=*50727*/export/software/grid/grid/install/.oui, NLSPATH=/usr/dt/lib/nls/msg/%L/%N.cat, SSH_CONNECTION=172.16.64.55 56370 172.16.72.18 22, OLDPWD=/export/oracle, LC_CTYPE=, CLASSPATH=, PATH=/usr/bin:/usr/ccs/bin:/usr/bin:/bin:/export/software/grid/grid/install, LC_ALL=, DISPLAY=localhost:10.0, LC_MONETARY=, USER=oracle, HOME=/export/oracle, XTERM_SHELL=/bin/bash, XAUTHORITY=/tmp/ssh-xauth-mlq21a/xauthfile, A__z=”*SHLVL, XTERM_LOCALE=en_US.UTF-8, TZ=localtime, LC_TIME=, LANG=en_US.UTF-8}<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->INFO: Starting Output Reader Threads for process /tmp/OraInstall2017-03-28_12-50-48PM/ext/bin/lsnodes<!-- raw HTML omitted --></p>
+<p><strong><!-- raw HTML omitted -->INFO: The process /tmp/OraInstall2017-03-28_12-50-48PM/ext/bin/lsnodes exited with code 9<!-- raw HTML omitted --></strong></p>
+<p>So we can see the problem. lsnodes is not able to list the nodes. Let us try to run that command manually.</p>
+<p><!-- raw HTML omitted -->-bash-4.1$ export PATH=PATH=/usr/bin:/usr/ccs/bin:/usr/bin:/bin:/export/software/grid/grid/install<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->-bash-4.1$ <!-- raw HTML omitted --><!-- raw HTML omitted -->/tmp/OraInstall2017-03-28_12-50-48PM/ext/bin/lsnodes<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->ld.so.1: lsnodes: fatal: libskgxn2.so: open failed: No such file or directory<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->Killed<!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted -->-bash-4.1$<!-- raw HTML omitted --></p>
+<p>So looks like it is not able to find this library called libskgxn2.so. If we do a find for this file name we can see that it is present in this directory /usr/cluster/lib/sparcv9/libskgxn2.so .</p>
+<p>Some googling and MOS searches revealed that it expects the library to be present at /opt/ORCLcluster/lib. This directory doesn’t exist here. As a workaround we can create this directory manually and create symbolic link to file libskgxn2.so</p>
+<p>The lsnodes command worked fine after this workaround and installer also shows both the nodes listed.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

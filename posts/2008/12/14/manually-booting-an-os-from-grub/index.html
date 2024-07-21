@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manually booting an OS from GRUB | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Manually booting an OS from GRUB</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2008/12/14</h2>
+</div>
+
+<main>
+<p>One of my friend today asked me about removing Linux partitions &amp; GRUB (from a dual boot system) and return back to windows alone. Removing Linux involves just formatting/removing the partitions. Now to remove GRUB either do <strong>fdisk /mbr</strong> from a Windows 98 bootable CD or do <strong>fixmbr</strong> after booting into repair mode with Windows XP CD. But if you have none then to remove GRUB you will need some utility like <a href="http://www.ambience.sk/fdisk-master-boot-record-windows-linux-lilo-fixmbr.php">this one</a> and if you reboot before doing that it might make GRUB unable to boot into Windows. It will get stuck at GRUB&gt; prompt only. So there is an option: to manually boot the OS you want (ie Windows). A quick search gave link to <a href="http://www.ntcompatible.com/How_to_remove_GRUB_loader_t28242.html#150012">this thread</a>. It involves few commands on the GRUB prompt:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;grub&gt; rootnoverify (hd0,0)
+grub&gt; makeactive
+grub&gt; chainloader +1
+grub&gt; boot
+</code></pre><p>It will load the NTLDR where your Windows is installed in Partition 1 on HDD 1.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Failed to execute the command &amp;#8220;&amp;#8221;/u01/app/xag/bin/clsecho&amp;#8221; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Failed to execute the command “”/u01/app/xag/bin/clsecho”</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2019/01/08</h2>
+</div>
+
+<main>
+<p>I was configuring GoldenGate in HA mode by following <a href="https://www.oracle.com/technetwork/database/features/availability/maa-wp-gg-oracledbm-128760.pdf">this document</a>. Everything worked ok but in the end while running agctl config goldengate to view the configuration of GoldenGate resource, it was failing with the following error:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;wp-block-preformatted&#34;&gt;[oracle@exadatadb02 ~]$ agctl config goldengate GG_TARGET&lt;br&gt;&lt;/br&gt; Failed to execute the command &#34;&#34;/u01/app/xag/bin/clsecho&#34; -p xag -f xag -m 5080 &#34;GG_TARGET&#34;&#34; (rc=134), with the message:&lt;br&gt;&lt;/br&gt; Oracle Clusterware infrastructure fatal error in clsecho.bin (OS PID 126367_140570897783808): Internal error (ID (:CLSB00107:)) - Error -1 &lt;strong&gt;(ORA-08275) determining Oracle base&lt;/strong&gt;&lt;br&gt;&lt;/br&gt; /u01/app/xag/bin/clsecho: line 45: 126367 Aborted                 (core dumped) ${CRS_HOME}/bin/clsecho.bin &#34;$@&#34;&lt;br&gt;&lt;/br&gt; Failed to execute the command &#34;&#34;/u01/app/xag/bin/clsecho&#34; -p xag -f xag -m 5081 &#34;/u01/app/oragg/product&#34;&#34; (rc=134), with the message:
+</code></pre><p>If you look at the error in bold it sounds kinda obvious that it is not able to figure our where the ORACLE_BASE is. But somehow it didn’t strike me at that moment. So started looking around. If we look at the command it is running, it runs clsecho. This is simply a shell script which in turn calls $CRS_HOME/bin/clsecho.bin . In the script, it sets various environment variables and that is where the problem was. There are lines like:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;wp-block-preformatted&#34;&gt;ORACLE_BASE=&lt;br&gt;&lt;/br&gt;export ORACLE_BASE
+</code></pre><p>Nowhere in the script, it is setting the value of ORACLE_BASE. That was causing an issue. I changed the first line to set the ORACLE_BASE location and it worked fine after that. There was another issue i faced with ggsci after doing xag configuration. Will do another blog post on that.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

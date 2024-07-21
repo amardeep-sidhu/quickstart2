@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Take care of a slash in a SQL script | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Take care of a slash in a SQL script</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2009/06/14</h2>
+</div>
+
+<main>
+<p>Since long time i have almost been writing useless posts only. Now, i guess my blog doesn’t even look like an Oracle blog. So thought about posting something related to Oracle 😉</p>
+<p>Day before yesterday a colleague at my workplace asked that she was running an SQL script (which contained a simple DBMS_MVIEW.REFRESH() statement to refresh an MVIEW), it ran successfully but after completion re-ran the last command run in the session. I was also puzzled and checked the SQL script but it contained simple DBMS_MVIEW.REFRESH() statement. Next try revealed that the script actually had a / (slash) in the second line (with no semi-colon at the end of the first line). Something like this (I used dbms_stats instead of dbms_mview):</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;exec dbms_stats.gather_table_stats(user,&#39;EMP&#39;)
+/
+</code></pre><p>Now this thing, when run in SQL* Plus session can be confusing:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;SCOTT@TESTING &gt;
+SCOTT@TESTING &gt;delete emp1;
+delete emp1
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+SCOTT@TESTING &gt;@c:\test
+
+PL/SQL procedure successfully completed.
+
+delete emp1
+*
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+SCOTT@TESTING &gt;
+</code></pre><p>There is no semicolon at the end of the first statement but it executes without that also. So the slash in the 2nd line simply re-executes the last SQL, as expected 🙂 . But it does get confusing !</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

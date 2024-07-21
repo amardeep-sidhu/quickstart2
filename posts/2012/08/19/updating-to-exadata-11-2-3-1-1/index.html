@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Updating to Exadata 11.2.3.1.1 | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Updating to Exadata 11.2.3.1.1</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2012/08/19</h2>
+</div>
+
+<main>
+<p>Just a quick note about change in the way the compute nodes are patched starting from version 11.2.3.1.1. For earlier versions Oracle provided the minimal pack for patching the compute nodes. Starting with version 11.2.3.1.1 Oracle has discontinued the minimal pack and the updates to compute nodes are done via Unbreakable Linux Network (ULN).</p>
+<p>Now there are three ways to update the compute nodes:</p>
+<p>1) You have internet access on the Compute nodes. In this case you can download patch <strong>13741363</strong>, complete the one time setup and start the update.</p>
+<p>2) In case you don’t have internet access on the Compute nodes you can choose some intermediate system (that has internet access) to create a local repository and then point the Compute nodes to this system to install the updates.</p>
+<p>3) Oracle will also provide all the future updates via an downloadable ISO image file (patch 14245540 for 11.2.3.1.1). You can download that ISO image file, mount it on some local system and point the compute nodes to this system for updating the rpms (the readme has all the details on how to do this).</p>
+<p>Some useful links:</p>
+<p><a href="https://blogs.oracle.com/XPSONHA/entry/updating_exadata_compute_nodes_using">https://blogs.oracle.com/XPSONHA/entry/updating_exadata_compute_nodes_using</a></p>
+<p><a href="https://blogs.oracle.com/XPSONHA/entry/new_channels_for_exadata_11">https://blogs.oracle.com/XPSONHA/entry/new_channels_for_exadata_11</a></p>
+<p>Metalink note <strong>1466459.1</strong></p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

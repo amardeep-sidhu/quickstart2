@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-04080: trigger &amp;#8216;PRICE_HISTORY_TRIGGERV1&amp;#8217; does not exist | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-04080: trigger ‘PRICE_HISTORY_TRIGGERV1’ does not exist</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2019/01/22</h2>
+</div>
+
+<main>
+<p>It is actually a dumb one. I was disabling triggers in a schema and ran this SQL to generate the disable statements. (Example from <a href="http://plsql-tutorial.com/plsql-triggers.htm">here</a>)</p>
+<!-- raw HTML omitted -->
+<h2 id="altertriggertrigger_namedisable">&lsquo;ALTERTRIGGER&rsquo;||TRIGGER_NAME||&lsquo;DISABLE;&rsquo;</h2>
+<p>alter trigger PRICE_HISTORY_TRIGGERv1 disable;</p>
+<p>HR@test&gt; alter trigger PRICE_HISTORY_TRIGGERv1 disable;
+alter trigger PRICE_HISTORY_TRIGGERv1 disable
+*
+ERROR at line 1:
+ORA-04080: trigger &lsquo;PRICE_HISTORY_TRIGGERV1&rsquo; does not exist</p>
+<p>HR@test&gt;</p>
+<pre tabindex="0"><code>
+&lt;/div&gt;WTF ? It is there but the disable didn’t work. I was in hurry, tried to connect through SQL developer and disable and it worked ! Double WTF ! Then i spotted the problem. Someone created it with one letter in the name in small. So to make it work, we need to use double quotes.
+
+&lt;div class=&#34;wp-block-syntaxhighlighter-code &#34;&gt;```
+&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;
+HR@test&gt; alter trigger &#34;PRICE_HISTORY_TRIGGERv1&#34; disable;
+
+Trigger altered.
+
+HR@test&gt;
+</code></pre><!-- raw HTML omitted -->
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

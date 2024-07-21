@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OneCommand Step 1 error | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">OneCommand Step 1 error</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2017/04/10</h2>
+</div>
+
+<main>
+<p>Hit this silly issue while doing an Exadata deployment for a customer. Step 1 was giving the following error:</p>
+<p><!-- raw HTML omitted -->ERROR: 192.168.99.102 configured on dm01celadm01.example.com as dm01dbadm02 does not match expected value dm01dbadm02.example.com<!-- raw HTML omitted --></p>
+<p>I wasn’t able to make sense of it for quite some time until a colleague pointed out that the reverse lookup entries should be done for FQDN only. As it is clear in the above message reverse lookup of the IP 192.168.99.102 returns dm01dbadm02 instead of dm01dbadm02.example.com. Fixing this in DNS resolved the issue.</p>
+<p>Actually the customer had done reverse lookup entries for both the hostname and FQDN. As the DNS can return the results in any order, so the error message was bit random. Whenever the the hostname was returned first, Step 1 gave an error. But when the FQDN was the first thing returned, there was no error in Step 1 for that IP.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Reading explain plan of a SQL query&amp;#8230; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Reading explain plan of a SQL query…</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/04/22</h2>
+</div>
+
+<main>
+<p>Well, some information about how to go about generating and reading explain plan of a SQL query. Explain plan gives the information about the access path that Oracle is going to follow to execute your query [explain plan doesn’t actually execute the query, it just tells about the access path that Oracle will follow to execute the query; that too in current session, with all the current settings, it may be totally different in another session on the very same database].</p>
+<p>So after reading the explain plan of a particular query, we can see that is it executing efficiently ? Are the indexes being used ? and so on. Let us go through the basic setup required to use explain plan.</p>
+<p>First of all we need to create a table called PLAN_TABLE (It is the default name used by Oracle, you can use any other name also. But then, you would need to mention the name every time you run the explain plan stuff) where explain plan will store the details of the query plan.</p>
+<p>To create this table, run the script provided by Oracle $ORACLE_HOME/rdbms/admin/utlxplan.sql</p>
+<p>I would like to mention the Tom Kyte approach here. In his book Effective Oracle by design, Tom suggests to create plan_table as a GLOBAL TEMPORARY TABLE with the ON COMMIT PRESERVE ROWS option and then granting all privileges on PLAN_TABLE to public. Also create a public synonym, so that everyone can use the same table.</p>
+<p>Now when the plan table has been created, we are ready to go. Lets do EXPLAIN PLAN of a query:</p>
+<p>For the first time, we are going to use the simplest “Hello World” query: <em>select * from emp;</em> So lets see…</p>
+<pre tabindex="0"><code>SQL&gt; explain plan for2  select * from emp;Explained.
+</code></pre><p>This is the way to run EXPLAIN PLAN for some query. I simply write <em>explain plan for</em> and then the query itself. Now this <strong>Explained</strong> means Oracle has stored all the details n PLAN_TABLE and we have to read that data to see the details.</p>
+<p>Again to view those details, Oracle provides a script called $ORACLE_HOME/rdbms/admin/utlxpls.sql. For your convenience you can <strong>ed</strong> in your session and create this script over there itself as I did with the name <em>explain.</em></p>
+<p>So its the time to see that explain plan which we have just run. As I said I run the script <strong>explain</strong>:</p>
+<p><code> </code></p>
+<pre tabindex="0"><code>select * from emp;
+</code></pre><pre tabindex="0"><code>SQL&gt; @explainPLAN_TABLE_OUTPUT--------------------------------------------------------------------------------Plan hash value: 3956160932--------------------------------------------------------------------------| Id  | Operation         | Name | Rows  | Bytes | Cost (%CPU)| Time     |
+
+--------------------------------------------------------------------------
+
+|   0 | SELECT STATEMENT  |      |    14 |   518 |     3   (0)| 00:00:01 |
+
+|   1 |  TABLE ACCESS FULL| EMP  |    14 |   518 |     3   (0)| 00:00:01 |
+
+--------------------------------------------------------------------------
+
+8 rows selected.SQL&gt;
+
+Now we are ready to use it. Well, lets use a query based on emp and deptno tables.
+&lt;span&gt;select * from emp,dept&lt;/span&gt;&lt;span&gt;where emp.deptno=dept.deptno;&lt;/span&gt;
+&lt;p&gt;To see explain plan of this query we write&lt;/p&gt;
+&lt;span&gt;SQL&gt; explain plan set statement_id=&#39;q1&#39; for&lt;/span&gt;&lt;span&gt;  2  select * from emp,dept&lt;/span&gt;&lt;span&gt;  3  where emp.deptno=dept.deptno;&lt;/span&gt;&lt;span&gt;Explained.&lt;/span&gt;&lt;span&gt;SQL&gt;&lt;/span&gt;
+&lt;p&gt;This is the syntax for using explain plan. set statement_id we use to store multiple plans in the plan table. Then we write for and the SQL query we want to see explain plan for. SQL Plus will prompt &#34;Explained&#34; and we are back to SQL prompt. Now the plan has been stored in PLAN_TABLE table and we need to read it. For that Oracle provides us with a script called utlxpls.sql (in $ORACLE_HOME/rdbms/admin/). [I generally create the same script in bin folder, so that to run it I can simply write @utlxpls]&lt;/p&gt;
+SQL&gt; @utlxplsPLAN_TABLE_OUTPUT------------------------------------------------------------------------------------------------------------------------------------------------------------| Id  | Operation                    |  Name       | Rows  | Bytes | Cost  |----------------------------------------------------------------------------|   0 | SELECT STATEMENT             |             |       |       |       ||   1 |  NESTED LOOPS                |             |       |       |       ||   2 |   TABLE ACCESS FULL          | EMP         |       |       |       ||   3 |   TABLE ACCESS BY INDEX ROWID| DEPT        |       |       |       ||*  4 |    INDEX UNIQUE SCAN         | PK_DEPT     |       |       |       |----------------------------------------------------------------------------PLAN_TABLE_OUTPUT--------------------------------------------------------------------------------Predicate Information (identified by operation id):---------------------------------------------------4 - access(&#34;EMP&#34;.&#34;DEPTNO&#34;=&#34;DEPT&#34;.&#34;DEPTNO&#34;)Note: rule based optimization17 rows selected.SQL&gt;
+&lt;p&gt;These are the details that explain plan has provided us. Now there comes interpretation of this information. First of all to figure out what happens first, second and so on ? Well this is shown by the indentation of various steps in plan_table_output. The rightmost step (the most indented one) is executed first and then the 2nd most indented and so on. So in our case step with id 4 is executed first, then 2 and 3, and then 1. In predicate information we can see that.......&lt;/p&gt;
+&lt;p&gt;to be continued... 😉&lt;/p&gt;
+</code></pre>
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

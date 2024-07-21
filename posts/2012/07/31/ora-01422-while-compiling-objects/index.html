@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ORA-01422 while compiling objects | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ORA-01422 while compiling objects</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2012/07/31</h2>
+</div>
+
+<main>
+<p>There was an interesting issue at one of the customer sites. Few tables in the database were altered and the dependent objects became invalid. But the attempts to compile the objects using utlrp.sql or manually were failing. In all the cases it was giving the same error:</p>
+<pre tabindex="0"><code>SQL&gt; alter function SCOTT.SOME_FUNCTION compile;
+ alter function SCOTT.SOME_FUNCTION compile
+*
+ERROR at line 1:
+ORA-00604: error occurred at recursive SQL level 1
+ORA-01422: exact fetch returns more than requested number of rows
+ORA-06512: at line 27
+
+SQL&gt;
+</code></pre><p>At first look it sounded like some issue with the dictionary as the error in case of every object (be it a view, function or package) was the same.</p>
+<p>Everybody was trying to compile the invalid objects and surprisingly few VIEWs (that were not getting compiled from SQL*Plus) got compiled from Toad ! But that didn’t explain anything. In fact it was more confusing.</p>
+<p>Finally I enabled errorstack for event 1422 and tried to compile a view. Here is the relevant content from the trace file</p>
+<pre tabindex="0"><code>----- Error Stack Dump -----
+ORA-01422: exact fetch returns more than requested number of rows
+----- Current SQL Statement for this session (sql_id=7kb01v7t6s054) -----
+SELECT SQL_TEXT FROM V$OPEN_CURSOR VOC, V$SESSION VS WHERE VOC.SADDR = VS.SADDR AND AUDSID=USERENV(&#39;sessionid&#39;) AND UPPER(SQL_TEXT) LIKE &#39;ALTER%&#39;
+</code></pre><p>I took it to be some system SQL and started searching in that direction and obviously that was of no use.</p>
+<p>In the mean time another guy almost shouted…”oh there is a trigger to capture DDL operations in the database; it must be that”. And indeed it was. Here is the code that was creating the problem:</p>
+<pre tabindex="0"><code> select sql_text into vsql_text
+           from v$open_cursor voc, v$session vs
+           where voc.saddr = vs.saddr
+           and audsid=userenv(&#39;sessionid&#39;)
+           and upper(sql_text) like &#39;ALTER%&#39;;
+</code></pre><pre tabindex="0"><code> 
+</code></pre><p>As v$open_cursor was returning multiple rows, hence the problem !</p>
+<p>Moral is that the errorstack traces do tell a lot (of course if you listen carefully) 😉</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

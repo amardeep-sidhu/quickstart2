@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ZDLRA patching | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">ZDLRA patching</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2021/03/12</h2>
+</div>
+
+<main>
+<p>To be honest, Fernando Simon has already documented all the steps needed in ZDLRA patching . So this post is more like a reference post for me and it points to the links on <a href="http://www.fernandosimon.com/blog/">his blog</a>. One thing he could change though are the post titles. He also agrees 😉</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>The RA library patching part can be considered of two different types. This is an important difference. Make sure that you follow the right set of commands. When you are jumping between major versions say going from 12.x to 19.x, it is called an upgrade and the commands are like racli upgrade appliance –step=1. Fernando talks about this in detail in <a href="https://www.fernandosimon.com/blog/zdlra-patch-the-recovery-appliance/">this post</a>.</p>
+<p>On the other hand, when you are not jumping between versions; say going from 19.x to 19.x only, it is called patching and the commands are like racli patch appliance –step=1. Fernando has discussed this in detail in <a href="https://www.fernandosimon.com/blog/zdlra-patch-update-the-recovery-appliance/">this post</a>.</p>
+<p>The Exadata bit (image &amp; switches patching) of it is exactly the same as we do in Exadata. Fernando talks about this in <a href="https://www.fernandosimon.com/blog/exadata-and-zdlra-patch-exadata-stack/">this post</a>.</p>
+<p>The RA library patching bit is pretty much automated and works fine most of the time. If you hit an issue, you may find the solution/workaround documented in one of the MOS notes.</p>
+<p>Happy patching !</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

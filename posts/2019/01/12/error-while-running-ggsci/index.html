@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error while running ggsci | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Error while running ggsci</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2019/01/12</h2>
+</div>
+
+<main>
+<p>This was another issue that I faced while trying to configure GoldenGate in HA mode. ggsci was working fine after normal installation but after configuring it in HA mode and trying to run ggsci, it resulted in this:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;wp-block-preformatted&#34;&gt;[oragg@node2 product]$ ggsci&lt;br&gt;&lt;/br&gt; Oracle GoldenGate Command Interpreter for Oracle&lt;br&gt;&lt;/br&gt; Version 12.3.0.1.4 OGGCORE_12.3.0.1.0_PLATFORMS_180415.0359_FBO&lt;br&gt;&lt;/br&gt; Linux, x64, 64bit (optimized), Oracle 12c on Apr 16 2018 00:53:30&lt;br&gt;&lt;/br&gt; Operating system character set identified as UTF-8.&lt;br&gt;&lt;/br&gt; Copyright (C) 1995, 2018, Oracle and/or its affiliates. All rights reserved.&lt;br&gt;&lt;/br&gt; 2019-01-08 16:28:37.913&lt;br&gt;&lt;/br&gt; CLSD: An error occurred while attempting to generate a full name. Logging may not be active for this process&lt;br&gt;&lt;/br&gt; Additional diagnostics: CLSU-00100: operating system function: sclsdgcwd failed with error data: -1&lt;br&gt;&lt;/br&gt; CLSU-00103: error location: sclsdgcwd2&lt;br&gt;&lt;/br&gt; (:CLSD00183:)&lt;br&gt;&lt;/br&gt; GGSCI (node2) 1&gt;
+</code></pre><p>No obvious clues in the error message but little searching revealed that it had something to do with permissions. It was on Exadata so i tried to do a strace of ggsci and see if it could give some clues. There we go:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;wp-block-preformatted&#34;&gt;[oragg@node2 product]$ strace ggsci&lt;br&gt;&lt;/br&gt;.&lt;br&gt;&lt;/br&gt;.&lt;br&gt;&lt;/br&gt;mkdir(&#34;/u01/app/oracle/product/12.1.0.2/dbhome_4/log/exadatadb02&#34;, 01777) = -1 EACCES (Permission denied)
+</code></pre><p>That is the Oracle database home, GoldenGate is supposed to use. It is trying to create a directory at the mentioned path and not able to do it. There was another directory called <strong>client</strong> needed inside this. I created both of them and set the needed permissions &amp; the sticky bit and it worked fine. It was working fine on the other node, so i could check the permissions over there and do the same on this node.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

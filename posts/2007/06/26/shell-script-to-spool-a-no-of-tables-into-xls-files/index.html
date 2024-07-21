@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Shell script to spool a no of tables into .xls files&amp;#8230; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Shell script to spool a no of tables into .xls files…</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/06/26</h2>
+</div>
+
+<main>
+<p>On OTN someone asked <a href="http://forums.oracle.com/forums/thread.jspa?threadID=523835&amp;tstart=50">a question</a> that how to spool data from a table into a xls file. Spooling a single table I discussed in one of the <a href="http://amardeepsidhu.com/blog/2007/06/16/spool-to-a-xls-excel-file">previous posts</a>. We can use the same approach to spool data from more than 1 table also. Well here I will do it through a shell script and assume that you have a text file having list of tables to be spooled (Even if you don’t have one, it can be easily made by spooling the names of tables into a simple text file) Here is the shell script that you can use to spool data to various xls files, table wise.</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;cat list.txt | while read a
+do
+echo &#34;spooling $a&#34;
+sqlplus username/password@string &lt;&lt;EOF
+set feed off markup html on spool on
+spool /home/oracle/$a.xls
+select * from $a;
+spool off
+set markup html off spool off
+EOF
+done
+</code></pre><p>I didn’t see any work around for Windoze as SQLPLUS &lt;&lt; EOF thing doesn’t seem to work in Windows. Will try to find some alternative. If you come across something, do let me know.</p>
+<p>Sidhu</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

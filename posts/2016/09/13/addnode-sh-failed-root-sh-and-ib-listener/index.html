@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>addNode.sh, failed root.sh and IB listener | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">addNode.sh, failed root.sh and IB listener</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2016/09/13</h2>
+</div>
+
+<main>
+<p>So this customer has an Exadata quarter rack and they have an IB listener configured on both DB nodes (for DB connections from a multi-racked Exalogic system). We were adding a new DB node to this rack. So just followed the standard procedure of creating users, directories etc on the new node, setting up ssh equivalence and running addNode.sh. All went fine but root.sh failed. Little looking into the logs revealed that it failed while running <strong>srvctl start listener –n &lt;node_name&gt;</strong></p>
+<p>If we manually run this command, it will immediately reveal what the problem is. It is not able to start IB listener on the new node as the IB VIP doesn’t yet exist. It could happen for any of the additional networks added.</p>
+<p>There is a MOS note that describes this exact situation but the solution that it gives is to remove the additional listener, complete addNode.sh &amp; root.sh and add the additional listener back. That wasn’t possible in this case. After little bit of googling I stumbled upon <a href="https://ardentperf.com/2013/11/04/listener-error-from-addnode-sh-with-second-network/">this post</a> by <a href="https://ardentperf.com/">Jeremy Schneider</a>. His colleague solved this problem with a very simple and clever workaround. Before root.sh prepares to run <strong>srvctl start listener</strong> command, run the add VIP command from another Window <img src="http://amardeepsidhu.com/blog/wp-content/uploads/2016/09/wlEmoticon-winkingsmile.png" alt="Winking smile">. Additional network would have already got added when root.sh runs on the new node.</p>
+<p>To be able to perform this trick, you have to have the hosts file updated with the new VIP name and IP and be ready with the command to add the VIP. While root.sh is running, it will show a message like “there is already an active cluster, restarting to join”, immediately start trying to run <strong>srvctl add vip</strong> command in another window. The moment CRS, comes up the command will succeed. Immediately after that root.sh is going to run <strong>srvctl start listener</strong> command, and this time it shouldn’t fail as the VIP is already added.</p>
+<p>Another small mistake we made was not updating the cellip.ora on the new node before running root.sh. That caused the root.sh to fail as it couldn’t talk to ASM running on existing cell nodes. Updating cellip.ora with the existing storage node IPs fixed the problem.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

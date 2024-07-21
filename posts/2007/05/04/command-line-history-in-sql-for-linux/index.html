@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Command line history in SQL (for Linux)&amp;#8230; | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Command line history in SQL (for Linux)…</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2007/05/04</h2>
+</div>
+
+<main>
+<p>Found a very interesting article on Dizwell’s blog. It was about keeping history of the SQL commands in SQL Plus on Linux. It is almost very simple. Just need to download a small utility called rlwrap from <a href="http://utopia.knoware.nl/%7Ehlub/rlwrap/">here</a>. Its a tar.gz file. Download it, un-tar using</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;
+tar -xvf rlwrap-0.28.tar.gz
+</code></pre><p>It will create a directory with the same name. <!-- raw HTML omitted -->cd<!-- raw HTML omitted --> to the directory and run</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;
+./configure
+</code></pre><p>Now do</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;
+make install
+</code></pre><p>(I was logged in as <!-- raw HTML omitted -->oracle <!-- raw HTML omitted -->user, then did <!-- raw HTML omitted -->su, <!-- raw HTML omitted -->but it gave some errors, finally I logged in as root and it worked fine)</p>
+<p>Now what is left to be done is make an alias for sqlplus as</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: css; title: ; notranslate&#34; title=&#34;&#34;&gt;
+alias sqlplus=&#39;rlwrap sqlplus&#39;
+</code></pre><p>Using up/down arrows, commands can be scrolled up and down just like windows. Have a look at full article <a href="http://www.dizwell.com/prod/node/56">here</a>.</p>
+<p>Cheers</p>
+<p>Sidhu</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+

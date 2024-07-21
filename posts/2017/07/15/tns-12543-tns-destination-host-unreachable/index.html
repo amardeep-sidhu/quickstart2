@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TNS-12543: TNS:destination host unreachable | My New Hugo Site</title>
+    <link rel="stylesheet" href="/quickstart2/css/style.css" />
+    <link rel="stylesheet" href="/quickstart2/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/quickstart2/">Home</a></li>
+      
+      <li><a href="/quickstart2/blog1/">Blog 1</a></li>
+      
+      <li><a href="/quickstart2/blog2/">Blog 2</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">TNS-12543: TNS:destination host unreachable</span></h1>
+<h2 class="author">Sidhu</h2>
+<h2 class="date">2017/07/15</h2>
+</div>
+
+<main>
+<p>Scenario : Setting up a physical standby from Exadata to a non-Exadata single instance. tnsping from standby to primary works fine but tnsping from primary to standby fails with:</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: sql; title: ; notranslate&#34; title=&#34;&#34;&gt;TNS-12543: TNS:destination host unreachable
+</code></pre><p>I am able to ssh standby from primary, can ping as well but tnsping doesn’t work. From the error description we can figure out that something is blocking the access. In this case it was iptables that was enabled on the standby server.</p>
+<p>Stopping the service resolved the issue.</p>
+<pre tabindex="0"><code>&lt;pre class=&#34;brush: bash; title: ; notranslate&#34; title=&#34;&#34;&gt;service iptables stop
+chkconfig iptables off
+</code></pre><p>The error is an obvious one but sometimes it just doesn’t strike you that it could be something simple like that.</p>
+
+</main>
+
+  <footer>
+  
+  
+  </footer>
+  </body>
+</html>
+
